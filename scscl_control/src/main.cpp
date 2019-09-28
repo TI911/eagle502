@@ -38,8 +38,8 @@ int main(int argc, char **argv)    //
   //ROS_INFO("Read 1: %d" ,b);
 
 	// 2019-09-27  test-2, maybe you must to test READ function
-  //int d = SCSCLControl::SCSCLReadTorqueEnable(10);
-  //ROS_INFO("Read: %d" ,d);
+  int d = SCSCLControl::SCSCLReadTorqueEnable(10);
+  ROS_INFO("Read: %d" ,d);
 
 	// 2019-09-27  test-3, maybe you must to test READ function ok
 	SCSCLControl::SCSCLWritePosition(10, 700, 0, 1000);
