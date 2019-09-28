@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">  
+
+<!-- =============== Gazebo =============== -->
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>snake</robotNamespace>
+    <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+  </plugin>
+</gazebo>
+
+<xacro:arg name="link_name" default="link"/>
+<xacro:property name="link_name" value="$(arg link_name)" />
+<xacro:arg name="tran_name" default="tran"/>
+<xacro:property name="tran_name" value="$(arg tran_name)" />
+  <xacro:arg name="joint_name" default="joint"/>
+  <xacro:property name="joint_name" value="$(arg joint_name)" />
+  <xacro:arg name="motor_name" default="motor"/>
+  <xacro:property name="motor_name" value="$(arg motor_name)" />
+
+
+<xacro:macro name="link_num" params="index" >
+  <gazebo reference="${link_name}${index}">
+     <selfCollide>true</selfCollide>
+     <mu1 value="0.6" />
+     <mu2 value="0.6" />
+  </gazebo>
+
+   <transmission name="${tran_name}${index}">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${joint_name}${index}">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="{motor_name}${index}">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+   </transmission>
+
+</xacro:macro>
+
+
+<!-- body units -->
+<xacro:link_num index="0"/>
+<xacro:link_num index="1"/>
+<xacro:link_num index="2"/>
+<xacro:link_num index="3"/>
+<xacro:link_num index="4"/>
+<xacro:link_num index="5"/>
+<xacro:link_num index="6"/>
+<xacro:link_num index="7"/>
+<xacro:link_num index="8"/>
+<xacro:link_num index="9"/>
+<xacro:link_num index="10"/>
+<xacro:link_num index="11"/>
+<xacro:link_num index="12"/>
+<xacro:link_num index="13"/>
+<xacro:link_num index="14"/>
+<xacro:link_num index="15"/>
+<xacro:link_num index="16"/>
+<xacro:link_num index="17"/>
+<xacro:link_num index="18"/>
+<xacro:link_num index="19"/>
+<xacro:link_num index="20"/>
+<xacro:link_num index="21"/>
+<xacro:link_num index="22"/>
+<xacro:link_num index="23"/>
+<xacro:link_num index="24"/>
+<xacro:link_num index="25"/>
+<xacro:link_num index="26"/>
+<xacro:link_num index="27"/>
+<xacro:link_num index="28"/>
+<xacro:link_num index="29"/>
+
+</robot>

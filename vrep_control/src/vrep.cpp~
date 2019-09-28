@@ -1,0 +1,183 @@
+/**
+*	
+*
+*
+*
+*
+*
+**/
+
+#include "vrep.h"
+
+simxInt Vrep::client_id_ = 0;  // v-rep接続ID
+bool Vrep::is_connecting_to_vrep_ = false;
+bool Vrep::is_sim_running_        = false;
+bool Vrep::is_sim_pausing_        = false;
+
+simxInt Joint2=-1;
+simxInt Joint=-1;
+
+simxFloat ang=0.0;
+
+/** @fn
+ * @brief 与V-rep连接  V-REPに接続する
+ * @param なし
+ * @return (bool) false:接続失敗
+ */
+bool Vrep::ConnectToVrep() {
+	simxFinish(-1);  	// 结束之前的所有操作, 念のため，先に全ての操作を終了
+	ROS_INFO("Connecting to v-rep ....");
+
+	//simxStart API地址 ==> http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctions.htm#simxStart
+	//return value, he client ID, or -1 if the connection to the server was not possible 	
+	client_id_ = simxStart( /* connectionAddress 		  = */ (simxChar*)"127.0.0.1",
+                         	/* connectionPort    		  = */ 19997,  // 19997にすればvrep側を手動で開始する必要がない
+                         	/* waitUntilConnected		  = */ true,
+                         	/* doNotReconnectOnceDisconnected = */ true,
+                         	/* timeOutInMs 			      = */ 5000,
+                         	/* commThreadCycleInMs 		  = */ 5);
+
+  	if (client_id_ == -1) {
+    	ROS_ERROR("Could not connect to V-REP remote API server");
+    	return false;
+  	} else {
+    	ROS_INFO("Connected to V-REP remote API server, clinet ID = %d", client_id_);
+    	return true;
+ 	}
+}
+
+/** @fn
+ * @brief シミュレーションを開始する
+ * @param なし
+ * @return なし
+ */
+void Vrep::StartSimulation() {
+  	simxStartSimulation(client_id_, simx_opmode_oneshot_wait);
+  	ROS_INFO("Simulation is started.");
+  	is_sim_running_ = true;
+  	is_sim_pausing_ = false;
+}
+
+/** @fn
+ * @brief シミュレーションを一時停止する
+ * @param なし
+ * @return なし
+ * @detail
+ */
+void Vrep::PauseSimulation() {
+  if (is_sim_running_) {
+    WaitForReachingLastCommand();
+    simxPauseSimulation(client_id_, simx_opmode_oneshot);
+    ROS_INFO("Simulation is paused.");
+    is_sim_running_ = false;
+    is_sim_pausing_ = true;
+  }
+}
+
+/** @fn
+ * @brief シミュレーションを終了する
+ * @param なし
+ * @return なし
+ * @detail
+ */
+void Vrep::FinishSimulation() {
+  if ( is_sim_running_ or is_sim_pausing_ ) {
+    WaitForReachingLastCommand();
+    simxStopSimulation(client_id_, simx_opmode_oneshot_wait);
+    ROS_INFO("Simulation is finished.");
+    is_sim_running_ = false;
+
+  }
+}
+
+/** @fn
+ * @brief V-REPとの接続を切る
+ * @param なし
+ * @return なし
+ * @detail
+ */
+void Vrep::DisconnectFromVrep() {
+  FinishSimulation();
+  simxFinish(client_id_);
+  ROS_INFO("Disconnect from V-REP");
+  is_connecting_to_vrep_ = false;
+}
+
+/** @fn
+ * @brief V-REPに最後に送ったコマンドが効くのを待つ
+ * @param なし
+ * @return なし
+ * @detail
+ *  時間を確認するコマンドの返事が来た=その前に送ったコマンドが既に効いた
+ */
+void Vrep::WaitForReachingLastCommand() {
+  simxInt pin_time_temp;
+  simxGetPingTime(client_id_, &pin_time_temp);  // 最後に送信したコマンドが届くのを待つ
+  std::to_string(1);
+}
+
+
+bool Vrep::getHandle(char* joint_name)
+{
+
+
+	ReturnCode ret_code(
+		//http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctions.htm#simxGetObjectHandle
+		simxGetObjectHandle(client_id_, (simxChar*)joint_name, &Joint, simx_opmode_oneshot_wait)
+	);
+
+
+  	if (ret_code.is_some_error()) {
+    //	ret_code.DisplayWarn(/* comment = */ "@ GetHandle of ", true);
+    	ROS_ERROR("Could not get handle of object");
+    	return false;
+  	} else {
+    	ROS_INFO("Got handle of : Joint");
+    	return true;
+  	}
+}
+
+void Vrep::SetTargetAngle(double angle)
+{
+/*
+	if(simx_error_noerror != simxSetJointTargetPosition(client_id_, Joint1, angle*M_PI/180, simx_opmode_oneshot)){		
+		int i=simxSetJointTargetPosition(client_id_, Joint1, angle*M_PI/180, simx_opmode_oneshot);
+		ROS_INFO("Get Handle error!; %d", i);
+	}
+*/
+
+ if (simxGetConnectionId(client_id_) != -1){
+	//ReturnCode ret_code(
+		//simxSetJointTargetPosition(client_id_, Joint1, angle*M_PI/180, simx_opmode_oneshot);
+   // );
+
+	//ReturnCode ret_code(
+		//simxSetJointTargetPosition(client_id_, Joint2, angle*M_PI/180, simx_opmode_oneshot);
+    //);
+
+	//ROS_INFO("********   joint1=%3.2f  ********", angle*M_PI/180);
+}
+	//extApi_sleepMs(10);
+
+  //	if (ret_code.is_some_error()) {
+   // 	ret_code.DisplayWarn(/* comment = */ "@ GetHandle of "+Joint1, false);
+   /// 	ROS_ERROR("Could not get handle of 2222");
+   // 	//return false;
+  //	} else {
+   // 	ROS_INFO("Got handle of : Joint1");
+   	//return true;
+//	}
+//
+
+}
+
+
+
+
+
+
+
+
+
+
+

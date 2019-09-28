@@ -1,0 +1,40 @@
+<!-- -*- mode: XML -*- -->
+
+<launch>
+  <!-- arguments -->
+  <arg name="model" default="$(find snake_description)/urdf/snake.urdf.xacro"/>
+  <arg name="gui" default="true" />
+
+ 
+ <!-- 目標形状の表示 -->
+  <param name="target_robot_description" 
+         command="$(find xacro)/xacro '$(arg model)' joint_name:=target_joint link_name:=target_link"/>
+  <node pkg="isnake_js_publisher" type="isnake_js_publisher" name="target_js_publisher" args="target_joint" output="screen">
+    <remap from="joint_states" to="target_joint_states"/>
+    <remap from="joint_position" to="joint_target_position"/>
+  </node>
+
+  <node name="target_robot_state_publisher" pkg="robot_state_publisher" type="state_publisher">
+    <remap from="robot_description" to="target_robot_description"/>
+    <remap from="joint_states" to="target_joint_states"/>
+  </node>
+
+<!--  現在形状の表示 -->
+  <param name="current_robot_description"
+  command="$(find xacro)/xacro '$(arg model)' joint_name:=current_joint link_name:=current_link" />
+  <node pkg="isnake_js_publisher" type="isnake_js_publisher" name="current_js_publisher" args="current_joint" output="screen">
+    <remap from="joint_states" to="current_joint_states"/>
+  </node>
+
+  <node name="current_robot_state_publisher" pkg="robot_state_publisher" type="state_publisher">
+    <remap from="robot_description" to="current_robot_description"/>
+    <remap from="joint_states" to="current_joint_states"/>
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="target_and_current_frame_connector" args="0 1 0 0 0 0 target_link0 current_link0 100" />
+
+  <param name="use_gui" value="$(arg gui)"/>
+  <!-- rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true" args="-d $(find snake_description)/launch/config/snake_description.rviz"/>
+
+</launch>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<launch>
+  <node name="snake_control" pkg="snake_control" type="snake_control_node" output="screen">
+  </node>
+
+  <param name="use_sim_time" value="true" />
+</launch>

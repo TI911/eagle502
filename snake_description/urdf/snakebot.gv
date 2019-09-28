@@ -1,0 +1,65 @@
+digraph G {
+node [shape=box];
+"link0" [label="link0"];
+"camera_link" [label="camera_link"];
+"link1" [label="link1"];
+"link2" [label="link2"];
+"link3" [label="link3"];
+"link4" [label="link4"];
+"link5" [label="link5"];
+"link6" [label="link6"];
+"link7" [label="link7"];
+"link8" [label="link8"];
+"link9" [label="link9"];
+"link10" [label="link10"];
+"link11" [label="link11"];
+"link12" [label="link12"];
+"link13" [label="link13"];
+"link14" [label="link14"];
+"link15" [label="link15"];
+"link16" [label="link16"];
+"link17" [label="link17"];
+"link18" [label="link18"];
+"tail_link" [label="tail_link"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"link0" -> "joint0" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"joint0" -> "camera_link"
+"link0" -> "joint1" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint1" -> "link1"
+"link1" -> "joint2" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint2" -> "link2"
+"link2" -> "joint3" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint3" -> "link3"
+"link3" -> "joint4" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint4" -> "link4"
+"link4" -> "joint5" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint5" -> "link5"
+"link5" -> "joint6" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint6" -> "link6"
+"link6" -> "joint7" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint7" -> "link7"
+"link7" -> "joint8" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint8" -> "link8"
+"link8" -> "joint9" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint9" -> "link9"
+"link9" -> "joint10" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint10" -> "link10"
+"link10" -> "joint11" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint11" -> "link11"
+"link11" -> "joint12" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint12" -> "link12"
+"link12" -> "joint13" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint13" -> "link13"
+"link13" -> "joint14" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint14" -> "link14"
+"link14" -> "joint15" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint15" -> "link15"
+"link15" -> "joint16" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint16" -> "link16"
+"link16" -> "joint17" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint17" -> "link17"
+"link17" -> "joint18" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint18" -> "link18"
+"link18" -> "joint19" [label="xyz: -0.09 0 0 \nrpy: 0 -0 0"]
+"joint19" -> "tail_link"
+}

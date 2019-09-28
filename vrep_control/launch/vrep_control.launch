@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+  <node name="vrep_control_node" pkg="vrep_control" type="vrep_control_node" output="screen">
+  </node>
+
+	rosparam set use_sim_time true    
+
+</launch>
+
+
