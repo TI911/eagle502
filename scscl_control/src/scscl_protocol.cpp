@@ -17,8 +17,6 @@
 
 static uint8_t	Level =1;  //舵机返回等级
 
-
-
 int SCSCLProtocol::writeByte(uint8_t ID, uint8_t MemAddr, uint8_t bDat)
 {
 	SerialCom::FlushAllBuf();	//flushSCS();
@@ -111,6 +109,42 @@ void SCSCLProtocol::writeBuf(uint8_t ID, uint8_t MemAddr, uint8_t *nDat, uint8_t
 	SerialCom::WriteData(&CheckSum, 1);
 
 }
+
+//同步写指令
+//舵机ID[]数组，IDN数组长度，MemAddr内存表地址，写入数据，写入长度
+void SCSCLProtocol::snycWrite(uint8_t ID[], uint8_t IDN, uint8_t MemAddr, uint8_t *nDat, uint8_t nLen)
+{
+	uint8_t i, j;
+	uint8_t mesLen = ((nLen+1)*IDN+4);
+	uint8_t checkSum = 0;
+	uint8_t bBuf[7];
+	bBuf[0] = 0xff;
+	bBuf[1] = 0xff;
+	bBuf[2] = 0xfe;
+	bBuf[3] = mesLen;
+	bBuf[4] = INST_SYNC_WRITE;
+	bBuf[5] = MemAddr;
+	bBuf[6] = nLen;
+	//writeSCS(bBuf, 7);
+	SerialCom::WriteData(bBuf, 7);
+
+	checkSum = 0xfe + mesLen + INST_SYNC_WRITE + MemAddr + nLen;
+	for(i=0; i<IDN; i++){
+		//writeSCS(ID+i, 1);
+		//writeSCS(nDat, nLen);
+		SerialCom::WriteData(ID+i, 1);
+		SerialCom::WriteData(nDat, nLen);
+
+		checkSum += ID[i];
+		for(j=0; j<nLen; j++){
+			checkSum += nDat[j];
+		}
+	}
+	checkSum = ~checkSum;
+	//writeSCS(&checkSum, 1);
+	SerialCom::WriteData(&checkSum, 1);
+}
+
 
 
 int SCSCLProtocol::Ack(uint8_t ID)

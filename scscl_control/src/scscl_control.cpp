@@ -58,6 +58,14 @@ int SCSCLControl::SCSCLReadTorqueEnable(uint8_t ID)
 	return SCSCLProtocol::readByte(ID, ADDR_SCSCL_TORQUE_ENABLE);
 }
 
+
+//读位置，超时返回-1
+int SCSCLControl::SCSCLReadPosition(uint8_t ID)
+{
+	return SCSCLProtocol::readWord(ID, ADDR_SCSCL_PRESENT_POSITION_L);
+}
+
+
 //写位置指令
 //舵机ID，Position位置，运行时间Time，速度Speed
 int SCSCLControl::SCSCLWritePosition(uint8_t ID, uint16_t Position, uint16_t Time, uint16_t Speed)
@@ -73,17 +81,28 @@ int SCSCLControl::SCSCLWritePosition(uint8_t ID, uint16_t Position, uint16_t Tim
 
 }
 
-
-
-//读位置，超时返回-1
-int SCSCLControl::SCSCLReadPosition(uint8_t ID)
+//写位置指令
+//舵机ID[]数组，IDN数组长度，Position位置，运行时间Time，速度Speed
+void SCSCLControl::SCSCLSyncWritePosition(uint8_t ID[], uint8_t IDN, uint16_t Position, uint16_t Time, uint16_t Speed)
 {
-	return SCSCLProtocol::readWord(ID, ADDR_SCSCL_PRESENT_POSITION_L);
+	uint8_t buf[6];
+
+	Host2SCS(buf+0, buf+1, Position);
+	Host2SCS(buf+2, buf+3, 0);
+	Host2SCS(buf+4, buf+5, Speed);
+	SCSCLProtocol::snycWrite(ID, IDN, ADDR_SCSCL_GOAL_POSITION_L, buf, 6);
 }
 
 
 
 /*
+//写位置指令
+//舵机ID，Position位置，运行时间Time，速度Speed
+int SCSCLControl::SCSCLSyncWritePosition(uint8_t ID, uint16_t Position, uint16_t Time, uint16_t Speed)
+{
+	return writePos(ID, Position, Time, Speed, INST_WRITE);
+}
+
 //异步写位置指令
 //舵机ID，Position位置，运行时间Time，速度Speed
 int SCSCLControl::SCSCLRegisterWritePosition(uint8_t ID, uint16_t Position, uint16_t Time, uint16_t Speed)

@@ -8,7 +8,6 @@
 #ifndef snake_snake_CONTROL_SRC_snake_CONTROL_REQUEST_H_
 #define snake_snake_CONTROL_SRC_snake_CONTROL_REQUEST_H_
 
-
 #include <vector>
 #include <ros/ros.h>
 #include <snake_msgs/snake_joint_command.h>

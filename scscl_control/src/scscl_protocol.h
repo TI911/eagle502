@@ -36,6 +36,7 @@ public:
   static int readWord(uint8_t ID, uint8_t MemAddr);
   static int Read(uint8_t ID, uint8_t MemAddr, uint8_t *nData, uint8_t nLen);
   static void writeBuf(uint8_t ID, uint8_t MemAddr, uint8_t *nDat, uint8_t nLen, uint8_t Fun);
+  static void snycWrite(uint8_t ID[], uint8_t IDN, uint8_t MemAddr, uint8_t *nDat, uint8_t nLen);//同步写指令
   static int Ack(uint8_t ID);
 
 
